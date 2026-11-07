@@ -1,0 +1,49 @@
+# Saucedemo test automation
+
+This project for the SDET exercise. I tested https://www.saucedemo.com with
+Robot Framework, Python and SeleniumLibrary, and wrote a small tool that
+updates my test plan spreadsheet after each run.
+
+Setup
+You need Python 3.10+, Google Chrome and Git.
+
+    git clone https://github.com/lloydangelotadeo/JR_QA-test.git
+    cd JR_QA-test
+    python -m venv venv
+    venv\Scripts\activate
+    pip install -r requirements.txt
+
+    Note: I used Windows
+
+From the project folder:
+
+    robot -d results tests
+
+To also update the spreadsheet:
+
+    robot -d results --listener libraries\ScenarioSync.py:data\test_scenarios.xlsx tests
+
+Results go to `results/` (`report.html` for the summary, `log.html` for
+details and failure screenshots).
+
+What to expect:
+8 tests: 6 pass, 2 fail. The failures (SC-01, SC-02) are on purpose. They
+check what the site should do, and it doesn't yet. They're tagged
+`known-bug`; add `--exclude known-bug` to skip them.
+
+Structure:
+    tests/        test cases (login, checkout, smoke)
+    resources/    pages/ = locators, keywords/ = reusable steps
+    libraries/    ScenarioSync, my custom tool
+    data/         test plan spreadsheet
+
+Locators, steps and tests are in separate files, so if the site changes I
+fix one place. The login tests use one keyword with a table of data.
+
+Bugs I found:
+- SC-01: checkout accepts a nonsense postal code like "@@@@".
+- SC-02: you can finish checkout with an empty cart.
+
+ScenarioSync
+A Robot listener that matches each test to a spreadsheet row by its ID
+for example, SC-03 and writes PASS/FAIL and the time after the run.
