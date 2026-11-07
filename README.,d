@@ -1,4 +1,4 @@
-# Saucedemo test automation
+TEST AUTOMATION
 
 This project for the SDET exercise. I tested https://www.saucedemo.com with
 Robot Framework, Python and SeleniumLibrary, and wrote a small tool that
